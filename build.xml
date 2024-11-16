@@ -5,19 +5,26 @@
     <property name="dist" location="dist"/>
     <property name="lib" location="lib"/>
 
+    <!-- Clean up previous builds -->
     <target name="clean">
         <delete dir="${build}"/>
         <delete dir="${dist}"/>
     </target>
 
+    <!-- Compile source code and include JAR files in the classpath -->
     <target name="compile" depends="clean">
         <mkdir dir="${build}"/>
-        <javac srcdir="${src}" destdir="${build}" includeantruntime="false" classpath="${lib}/*"/>
-    	<classpath>
-    	            <pathelement location="/Users/Kadari/Downloads/jakarta.servlet-api-5.0.0.jar"/>
-    	        </classpath>
+        <javac srcdir="${src}" destdir="${build}" includeantruntime="false">
+            <classpath>
+                <!-- Add all JARs from the lib directory -->
+                <fileset dir="${lib}">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
     </target>
 
+    <!-- Create the WAR file -->
     <target name="war" depends="compile">
         <mkdir dir="${dist}"/>
         <war destfile="${dist}/ToDoApp.war" webxml="${web}/WEB-INF/web.xml">
@@ -26,5 +33,6 @@
         </war>
     </target>
 
+    <!-- Build the project -->
     <target name="build" depends="war"/>
 </project>
