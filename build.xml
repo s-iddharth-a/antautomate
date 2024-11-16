@@ -1,38 +1,41 @@
-<project name="ToDoApp" default="build" basedir=".">
-    <property name="src" location="src"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ToDoApp" default="deploy" basedir=".">
+    <!-- Properties -->
     <property name="build" location="build"/>
-    <property name="web" location="WebContent"/>
     <property name="dist" location="dist"/>
     <property name="lib" location="lib"/>
+    <property name="web" location="WebContent"/>
+    <property name="servlet.jar" value="lib/jakarta.servlet-api-5.0.0.jar"/>
 
-    <!-- Clean up previous builds -->
+    <!-- Classpath for compilation -->
+    <path id="classpath">
+        <fileset dir="${lib}" includes="jakarta.servlet-api-5.0.0.jar"/>
+    </path>
+
+    <!-- Clean target -->
     <target name="clean">
         <delete dir="${build}"/>
         <delete dir="${dist}"/>
     </target>
 
-    <!-- Compile source code and include JAR files in the classpath -->
-    <target name="compile" depends="clean">
+    <!-- Compile target -->
+    <target name="compile" depends="init">
         <mkdir dir="${build}"/>
-        <javac srcdir="${src}" destdir="${build}" includeantruntime="false">
-            <classpath>
-                <!-- Add all JARs from the lib directory -->
-                <fileset dir="${lib}">
-                    <include name="*.jar"/>
-                </fileset>
-            </classpath>
-        </javac>
+        <javac srcdir="${src}" destdir="${build}" classpathref="classpath"/>
     </target>
 
-    <!-- Create the WAR file -->
+    <!-- Create WAR -->
     <target name="war" depends="compile">
         <mkdir dir="${dist}"/>
-        <war destfile="${dist}/ToDoApp.war" webxml="${web}/WEB-INF/web.xml">
+        <war destfile="${dist}/ToDoAppJSP.war" webxml="${web}/WEB-INF/web.xml">
             <fileset dir="${build}"/>
             <fileset dir="${web}"/>
         </war>
     </target>
 
-    <!-- Build the project -->
-    <target name="build" depends="war"/>
+    <!-- Deploy target (optional) -->
+    <target name="deploy" depends="war">
+        <!-- You can add deployment steps here if necessary -->
+    </target>
+
 </project>
