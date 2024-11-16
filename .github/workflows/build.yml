@@ -22,11 +22,13 @@ jobs:
         java-version: 11 
         distribution: 'adopt'
 
-    - name: Validate Java Installation
-      run: java -version  
-
     - name: Install Ant
       run: sudo apt-get update && sudo apt-get install -y ant
+
+    - name: Download Jakarta Servlet API JAR
+      run: |
+        mkdir -p lib
+        wget https://repo.maven.apache.org/maven2/jakarta/servlet/jakarta.servlet-api/5.0.0/jakarta.servlet-api-5.0.0.jar -P lib
 
     - name: Build with Ant
       run: ant -f build.xml
