@@ -1,0 +1,30 @@
+<project name="ToDoApp" default="build" basedir=".">
+    <property name="src" location="src"/>
+    <property name="build" location="build"/>
+    <property name="web" location="WebContent"/>
+    <property name="dist" location="dist"/>
+    <property name="lib" location="lib"/>
+
+    <target name="clean">
+        <delete dir="${build}"/>
+        <delete dir="${dist}"/>
+    </target>
+
+    <target name="compile" depends="clean">
+        <mkdir dir="${build}"/>
+        <javac srcdir="${src}" destdir="${build}" includeantruntime="false" classpath="${lib}/*"/>
+    	<classpath>
+    	            <pathelement location="/Users/Kadari/Downloads/jakarta.servlet-api-5.0.0.jar"/>
+    	        </classpath>
+    </target>
+
+    <target name="war" depends="compile">
+        <mkdir dir="${dist}"/>
+        <war destfile="${dist}/ToDoApp.war" webxml="${web}/WEB-INF/web.xml">
+            <fileset dir="${build}"/>
+            <fileset dir="${web}"/>
+        </war>
+    </target>
+
+    <target name="build" depends="war"/>
+</project>
